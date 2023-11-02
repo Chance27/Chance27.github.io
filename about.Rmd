@@ -1,0 +1,15 @@
+---
+title: "SC5126 Resume"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+
+## Resume
+My name is Si Chen. I am a graduate student from the Department of Biomedical Informatics.
+
+
+
+
