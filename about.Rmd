@@ -1,5 +1,5 @@
 ---
-title: "SC5126 Resume"
+title: "About"
 output: 
   html_document:
     toc: true
@@ -7,9 +7,28 @@ output:
     theme: cerulean
 ---
 
-## Resume
-My name is Si Chen. I am a graduate student from the Department of Biomedical Informatics.
+## Academic Experience
 
+09/2022 – 05/2024 (Expected), Columbia University, New York, USA
+
+* Master of Arts, Major in Biomedical Informatics
+
+09/2018 – 05/2022, McGill University, Montreal, Canada
+
+* Bachelor of Science, Major in Biology
+
+## Research Experience
+
+07/2021 – 08/2021, Application of Machine Learning in DNA Methylation, Montreal, Canada	
+
+01/2021 – 12/2021, Research on the Influence of 2013 Colorado Flood, Montreal, Canada
+
+10/2020 – 12/2020, Research on Yeast Cell-Cycle Network Model, Montreal, Canada
+
+09/2022 – 12/2022, Word Sense Disambiguation for Medical Abbreviations in Clinical Notes, New York, USA
+
+02/2023 – 05/2023, 30-Day Hospital Readmission Prediction Based on Sentiment Measured in
+Discharge Notes, New York, USA
 
 
 

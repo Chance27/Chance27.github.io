@@ -8,13 +8,7 @@ output:
 ---
 
 # Introductory landing page
-This is a website made for BISTP8105 homework 4.
-
-requirement: 
-- A brief introductory landing page
-- A page giving your academic and professional experience (i.e. a resume)
-- Links in the site navigation for your GitHub account, your email, and other professional networks.
-
+Welcome! This is a website made for BISTP8105 homework 4.
 
 
 # Links

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>SC5126 Plotly</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cerulean.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="plotly.html">Plotly</a>
+</li>
+<li>
+  <a href="mailto:&lt;sc5126@cumc.columbia.edu&gt;">
+    <span class="fa fa-envelope fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http://github.com/Chance27/">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">SC5126 Plotly</h1>
+
+</div>
+
+
+<div id="plotly" class="section level2">
+<h2>Plotly</h2>
+<p>Create a flexdashboard using plotly for that includes at least three
+distinct plot types (e.g. scatterplots, line plots, bar plots, box
+plots, etc.). Use one of the following datasets, and load from the
+p8105.datasets package: Instacart NY NOAA NYC Restaurant Inspections</p>
+<pre class="r"><code>library(tidyverse)
+library(p8105.datasets)
+library(plotly)</code></pre>
+<pre class="r"><code># data(instacart)
+
+df = 
+  instacart |&gt; 
+  select(
+    order_number, reordered, order_dow, order_hour_of_day, days_since_prior_order, 
+    product_name, aisle, department) |&gt;
+  filter(
+    reordered == 1,
+    department == &quot;produce&quot;,
+    days_since_prior_order &lt; 7,
+    aisle == &quot;fresh fruits&quot;) %&gt;% 
+  drop_na()</code></pre>
+</div>
+<div id="scatter-plot" class="section level2">
+<h2>Scatter plot</h2>
+<pre class="r"><code>df |&gt;
+  count(order_dow) |&gt; 
+  mutate(text_label = str_c(n, &quot; orders on day &quot;, order_dow)) |&gt; 
+  plot_ly(
+    x = ~order_dow, y = ~n, type = &quot;scatter&quot;, mode = &quot;lines&quot;,
+    text = ~text_label, alpha = 0.5) |&gt;  
+  layout(title = &#39;Count of order on each day&#39;, xaxis = list(title = &#39;Order Day of the Week&#39;))</code></pre>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-5cb438761e69a53d6077" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-5cb438761e69a53d6077">{"x":{"visdat":{"181a45c528a6":["function () ","plotlyVisDat"]},"cur_data":"181a45c528a6","attrs":{"181a45c528a6":{"x":{},"y":{},"mode":"lines","text":{},"alpha":0.5,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Count of order on each day","xaxis":{"domain":[0,1],"automargin":true,"title":"Order Day of the Week"},"yaxis":{"domain":[0,1],"automargin":true,"title":"n"},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,1,2,3,4,5,6],"y":[6268,3001,2536,2679,3386,4142,4376],"mode":"lines","text":["6268 orders on day 0","3001 orders on day 1","2536 orders on day 2","2679 orders on day 3","3386 orders on day 4","4142 orders on day 5","4376 orders on day 6"],"type":"scatter","marker":{"color":"rgba(31,119,180,0.5)","line":{"color":"rgba(31,119,180,1)"}},"error_y":{"color":"rgba(31,119,180,0.5)"},"error_x":{"color":"rgba(31,119,180,0.5)"},"line":{"color":"rgba(31,119,180,0.5)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="box-plot" class="section level2">
+<h2>Box plot</h2>
+<pre class="r"><code>df |&gt; 
+  mutate(product_name = fct_reorder(product_name, days_since_prior_order)) |&gt; 
+  filter(product_name %in% c(&quot;Pineapple&quot;, &quot;Strawberries&quot;, &quot;Limes&quot;, &quot;Cantaloupe&quot;, &quot;Mango&quot;)) |&gt; 
+  plot_ly(y = ~days_since_prior_order, color = ~product_name, type = &quot;box&quot;, colors = &quot;viridis&quot;) |&gt; 
+  layout(yaxis = list(title = &#39;Days since prior order&#39;), xaxis = list(title = &#39;Selected fresh fruits&#39;))</code></pre>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ce9a923610507ca18f53" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-ce9a923610507ca18f53">{"x":{"visdat":{"181a41a472e43":["function () ","plotlyVisDat"]},"cur_data":"181a41a472e43","attrs":{"181a41a472e43":{"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"box"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"yaxis":{"domain":[0,1],"automargin":true,"title":"Days since prior order"},"xaxis":{"domain":[0,1],"automargin":true,"title":"Selected fresh fruits"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"fillcolor":"rgba(49,102,142,0.5)","y":[1,5,1,3,6,6,5,6,5,4,6,0,5,5,3,2,4,4,4,6,3,5,3,5,6,6,5,5,3,5,5,3,3,5,0,6,5,3,5,5,2,6,5,3,2,6,6,3,0,6,1,1,5,5,4,2,6,2,6,4,3,6,0,5,6,4,6,5,6,5,0,4,4,4,4,2,4,0,5,6,4,4,1,4,0,1,3,0,2,2,5,4,6,6,3,6,5,6,3,5,6,3,6,5,5,2,3,5,4,1,6,4,4,6,6,2,6,2,3,3,5,2,5,6,6,5,5,3,4,1,3,6,3,3,6,3,6,6,4,2,4,5,5,3,4,0,6,5,6,0,3,3,6,5,5,4,6,6,2,5,5,3,5,6,4,3,3,3,6,4,4,6,3,1,6,5,4,4,4,3,5,4,4,4,4,6,5,3,6,6,2,0,5,6,4,5,5,5,6,3,3,2,6,4,0,6,2,5,2,5,6,5,6,5,0,6,5,6,3,2,5,6,1,1,4],"type":"box","name":"Cantaloupe","marker":{"color":"rgba(49,102,142,1)","line":{"color":"rgba(49,102,142,1)"}},"line":{"color":"rgba(49,102,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(40,124,142,0.5)","y":[6,6,2,3,0,6,4,5,4,4,6,6,1,0,3,6,3,6,5,6,2,5,6,1,6,5,3,3,2,6,6,3,6,6,3,2,6,6,2,0,6,4,0,6,5,0,2,5,4,5,6,1,3,6,6,5,5,4,2,5,1,5,6,5,3,3,5,2,5,3,6,1,5,1,4,2,1,6,6,1,0,4,3,6,4,4,6,1,5,6,5,2,6,6,2,6,1,5,2,0,6,3,4,3,1,5,5,6,6,6,5,5,4,5,6,6,4,6,5,1,5,4,2,1,5,4,6,4,3,6,5,6,5,5,4,4,5,5,1,0,3,6,6,6,5,4,0,6,5,3,4,3,2,2,2,5,5,2,6,4,6,5,6,6,6,0,6,2,6,3,0,6,6,5,3,5,2,6,4,6,0,2,4,4,5,5,5,2,3,3,4,6,2,3,4,3,0,2,4,4,1,6,6,5,2,6,4,4,0,5,1,6,6,6,5,3,3,5,3,4,5,6,3,5,4,0,5,4,3,3,5,2,6,1,0,6,4,4,2,6,1,6,6,1,5,2,2,4,6,5,6,5,5,0,6,3,5,4,6,4,3,4,0,5,3,5,5,1,6,1,1,3,6,5,6,6,6,3,3,2,2,5,5,5,5,4,5,0,0,5,3,6,6,6,4,0,4,0,5,5,2,6,2,6,1,5,3,6,0,3,4,6,4,1,4,2,0,1,0,3,2,5,5,5,3,6,5,5,5,0,6,6,6,1,2,2,5,6,0,6,3,6,5,1,3,6,6,6,3,3,6,3,3,5,0,5,3,1,4,6,4,6,1,4,6,4,1,0,6,4,6,6,3,1,4,5,3,1,3,5,3,3,4,1,6,6,2,6,2,6,3,0,0,6,3,1,6,2,4,1,3,3,2,0,5,2,4,3,1,6,4,3,5,6,5,2,3,3,6,6,6,3,6,6,6,3,5,5,3,5,6,0,5,5,0,6,0,6,5,6,3,4,5,6,4,3,3,6,5,6,6,5,0,6,3,4,3,3,6,3,4,5,4,1,6,5,6,3,3,6,0,4,5,2,6,2,0,0,5,4,5,4,1,2,3,5,3,3,6,1,4,5,2,3,1,5,0,6,4,5,0,3,6,4,5,4,6,4,5,6,1,6,6,5,3,2,4,2,4,1,6,3,6,6,5,4,6,4,4,1,5,6,1,5,6,6,2,2,0,5,5,5,0,6,6,2,6,0,5,4,2,6,5,6,2,3,6,1,0,1,6,6,6,3,6,0,1,2,3,0,6,5,2,3,4,2,6,5,0,4,6,3,0,5,1,5,5,4,6,2,5,4,4,5,4,6,6,4,2,3,0,2,4,3,4,6,6,6,3,4,3,5,5,5,6,1,4,4,6,4,5,5,1,2,1,4,6,4,3,4,5,5,6,6,4,1,5,5,4,0,2,6,6,6,2,0,4,3,6,6,6,2,6,4,2,3,5,6,5,5,5,1,2,4,6,1,4,5,3,2,2,4,4,3,6,5,5,4,1,5,6,5,4,6,2,4,5,5,1,4,4,4,5,3,4,5,2,4,3,4,5,6,6,0,0,0,5,6,2,5,2,4,6,3,4,6,1,4,3,6,2,1,3,6,6,6,4,5,6,6,5,6,2,6,6,5,2,4,6,0,5,3,6,1,5,5,0,4,5,4,3,1,6,4,5,5,1,6,6,5,6,6,3,3,6,1,6,6,6,6,5,6,4,6,5,1,6,6,2,5,0,5,5,4,6,2,5,6,4,6,4,3,0,6,2,1,2,2,0,3,6,5,3,0,6,4,3,6,6,4,6,4,5,6,4,2,6,0,3,2,0,3,3,6,3,2,6,4,2,3,0,4,0,6,0,0,6,1,4,6,3,0,0,5,5,5,5,3,0,5,3,2,5,6,6,6,0,6,6,3,3,4,5,4,4,3,4,5,3,6,1,3,6,4,4,4,3,6,5,6,3,1,3,1,0,2,5,6,5,4,2,5,3,5,0,2,5,5,4,6,4,6,6,6,2,4,5,2,2,2,0,4,6,4,1,2,4,4,6,5],"type":"box","name":"Limes","marker":{"color":"rgba(40,124,142,1)","line":{"color":"rgba(40,124,142,1)"}},"line":{"color":"rgba(40,124,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(39,127,142,0.5)","y":[6,6,2,6,5,6,4,3,3,0,5,2,2,0,4],"type":"box","name":"Mango","marker":{"color":"rgba(39,127,142,1)","line":{"color":"rgba(39,127,142,1)"}},"line":{"color":"rgba(39,127,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(45,178,125,0.5)","y":[4,4,6,5,3,6,6,4,5,1,3,6,6,2,6,6,5,6,4,6,2,2,6,5,6,4,3,4,0,3,5,3,3,6,6,5,3,4,5,0,3,2,4,6,6,0,0,4,6,4,6,1,6,6,4,6,5,4,6,6,6,6,2,4,3,5,1,6,4,5,3,6,4,5,5,6,4,5,1,4,5,5,4,5,6,6,0,3,6,4,6,4,4,5,2,4,1,6,5,6,6,3,4,2,5,6,6,5,6,4,6,1,3,5,5,6,5,5,2,6,6,1,3,4,4,3,6,1,6,6,5,6,4,2,6,6,0,3,5,5,2,4,1,3,6,6,6,6,5,4,6,1,6,6,2,6,5,5,5,6,4,3,6,6,5,4,5,2,5,2,3,4,2,2,5,1,1,4,2,2,2,2,6,6,5,0,1,6,4,4,2,3,5,6,5,4,0,3,0,6,5,4,6,0,1,3,6,6,5,6,5,6,6,3,3,5,2,0,5,4,4,6,5,5,2,6,5,2,1,2,0,6,5,5,4,0,5,3,4,5,3,5,4,5,6,3,6,6,0,0,2,2,6,3,3,2,1,5,5,3,4,1,2,1,4,5,3,5,4,5,4,4,6,4,5,6,4,6,1,6,5,1,5,5,5,3,0,6,3,6,6,1,4,3,6,6,4,2,4,5,6,2,6,2,2,0,1,4,6,4,6,4,1,2,6,3,4,1,6,2,5,3,5,5,6,5,6,1,3,2,4,6,6,6,4,3,4,4,6,0,3,2,6,3,3,4,5,5,5,3,1,5,4,6,1,2,2,5,2,3,6,4,3,6,3,3,6,2,1,1,4,6,2,4,6,6,5,1,6,6,5,5,2,3,2,6,1,3,5,6,6,0,0,5,1,5,6,4,6,0,6,4,6,5,6,4,2,3,4,0,6,2,3,6,3,5,3,2,6,4,6,4,2,6,0,2,5,5,3,3,5,4,3,4,0,4,6,3,2,5,4,5,4,3,1,5,5,3,3,0,5,6,5,2,2,3,0,2,2,1,3,5,6,6,4,2,2,4,6,4,6,6,5,3,6,5,3,5,1,6,2,4,2,4,3,0,6,1,4,0,6,0,5,6,5,4,3,5,4,5,6,4,0,3,2,5,1,6,1,6,4,4,6,1,4,6,3,3,5,4,5,6,4,4,6,3,3,4,4,4,5,3,1,1,5,4,4,5,6,1,5,1,1,3,3,6,3,1,5,3,1,0,6,5,4,4,6,5,6,5,0,6,2,1,0,0,5,0,1,3,6,3,6,5,3,4,6,6,4,6,6,3,6,3,6,4,5,5,6,3,6,6,6,4,6,6,5,6,0,5,4,6,5,4,3,2,1,3,1,6,6,6,4,6,6,5,2,6,6,1,4,0,4,5,6,6,6,5,5,4,5,2,2,2,5,3,4,0,4,6,5,2,6,4,4,6,5,5,5,3,4,5,6,5,2,6,6,5,3,4,5,5,4,1,6,6,2,5,3,3,4,6,4,3,2,4,4,6,2,6,6,6,5,6,3,6,4,5,6,5,4,6,3,6,5,2,6,3,6,2,6,6,5,3,5,6,1,6,5,2,3,0,5,3,5,6,4,0,4,1,4,0,6,5,5,4,2,5,4,6,6,2,3,5,6,1,0,2,5,6,3,3,3,4,6,5,1,4,6,6,4,5,1,5,4,5,1,6,5,4,2,5,4,3,6,5,2,4,6,6,3,5,6,5,5,3,3,5,4,6,2,6,3,4,6,5,0,6,3,5,2,3,6,3,6,1,6,6,5,5,4,3,4,4,5,4,4,6,3,4,6,6,1,5,4,4,6,2,5,6,4,5,3,5,5,0,6,6,4,2,1,6,6,0,2,2,0,4,3,2,6,6,6,6,6,6,2,6,3,2,4,1,5,0,4,3,1,6,0,4,3,4,0,5,2,2,4,6,2,3,6,4,5,6,2,2,2,3,5,3,3,3,5,4,6,4,4,4,2,5,0,5,6,2,1,6,5,0,6,4,2,2,3,6,6,2,4,0,4,4,2,2,2,0,2,4,5,5,6,6,4,3,4,2,5,4,4,1,6,4,6,2,3,3,3,3,4,0,0,3,6,6,5,5,5,5,1,2,6,5,5,5,5,6,3,4,6,2,6,5,4,6,3,2,0,6,6,6,6,5,5,6,1,4,4,4,2,4,2,4,1],"type":"box","name":"Strawberries","marker":{"color":"rgba(45,178,125,1)","line":{"color":"rgba(45,178,125,1)"}},"line":{"color":"rgba(45,178,125,1)"},"xaxis":"x","yaxis":"y","frame":null},{"fillcolor":"rgba(64,189,114,0.5)","y":[3,4,6,5,6,5,5,3,6,5,5,3,5,5,4,5,0,5,0,6,3,4,6,1,4,4,4,0,0,0,5,0,6,6,6,4],"type":"box","name":"Pineapple","marker":{"color":"rgba(64,189,114,1)","line":{"color":"rgba(64,189,114,1)"}},"line":{"color":"rgba(64,189,114,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="bar-plot" class="section level2">
+<h2>Bar plot</h2>
+<pre class="r"><code>df |&gt; 
+  count(product_name) |&gt; 
+  filter(n &gt;= 400)|&gt; 
+  mutate(product_name = fct_reorder(product_name, n)) |&gt; 
+  plot_ly(x = ~product_name, y = ~n, color = ~product_name, type = &quot;bar&quot;, colors = &quot;viridis&quot;) |&gt; 
+  layout(title = &#39;Count of popular product&#39;, xaxis = list(title = &#39;Product Name&#39;))</code></pre>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-1dbcb9da208ce5f42f53" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-1dbcb9da208ce5f42f53">{"x":{"visdat":{"181a46ad15789":["function () ","plotlyVisDat"]},"cur_data":"181a46ad15789","attrs":{"181a46ad15789":{"x":{},"y":{},"color":{},"colors":"viridis","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Count of popular product","xaxis":{"domain":[0,1],"automargin":true,"title":"Product Name","type":"category","categoryorder":"array","categoryarray":["Organic Granny Smith Apple","Organic Banana","Organic Blackberries","Organic Fuji Apple","Organic Gala Apples","Small Hass Avocado","Honeycrisp Apple","Organic Lemon","Organic Large Extra Fancy Fuji Apple","Limes","Strawberries","Large Lemon","Organic Avocado","Organic Hass Avocado","Organic Strawberries","Bag of Organic Bananas","Banana"]},"yaxis":{"domain":[0,1],"automargin":true,"title":"n"},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":["Organic Granny Smith Apple"],"y":[447],"type":"bar","name":"Organic Granny Smith Apple","marker":{"color":"rgba(68,1,84,1)","line":{"color":"rgba(68,1,84,1)"}},"textfont":{"color":"rgba(68,1,84,1)"},"error_y":{"color":"rgba(68,1,84,1)"},"error_x":{"color":"rgba(68,1,84,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Banana"],"y":[461],"type":"bar","name":"Organic Banana","marker":{"color":"rgba(72,24,106,1)","line":{"color":"rgba(72,24,106,1)"}},"textfont":{"color":"rgba(72,24,106,1)"},"error_y":{"color":"rgba(72,24,106,1)"},"error_x":{"color":"rgba(72,24,106,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Blackberries"],"y":[509],"type":"bar","name":"Organic Blackberries","marker":{"color":"rgba(71,45,123,1)","line":{"color":"rgba(71,45,123,1)"}},"textfont":{"color":"rgba(71,45,123,1)"},"error_y":{"color":"rgba(71,45,123,1)"},"error_x":{"color":"rgba(71,45,123,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Fuji Apple"],"y":[515],"type":"bar","name":"Organic Fuji Apple","marker":{"color":"rgba(66,64,134,1)","line":{"color":"rgba(66,64,134,1)"}},"textfont":{"color":"rgba(66,64,134,1)"},"error_y":{"color":"rgba(66,64,134,1)"},"error_x":{"color":"rgba(66,64,134,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Gala Apples"],"y":[546],"type":"bar","name":"Organic Gala Apples","marker":{"color":"rgba(59,82,139,1)","line":{"color":"rgba(59,82,139,1)"}},"textfont":{"color":"rgba(59,82,139,1)"},"error_y":{"color":"rgba(59,82,139,1)"},"error_x":{"color":"rgba(59,82,139,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Small Hass Avocado"],"y":[564],"type":"bar","name":"Small Hass Avocado","marker":{"color":"rgba(51,99,141,1)","line":{"color":"rgba(51,99,141,1)"}},"textfont":{"color":"rgba(51,99,141,1)"},"error_y":{"color":"rgba(51,99,141,1)"},"error_x":{"color":"rgba(51,99,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Honeycrisp Apple"],"y":[600],"type":"bar","name":"Honeycrisp Apple","marker":{"color":"rgba(44,114,142,1)","line":{"color":"rgba(44,114,142,1)"}},"textfont":{"color":"rgba(44,114,142,1)"},"error_y":{"color":"rgba(44,114,142,1)"},"error_x":{"color":"rgba(44,114,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Lemon"],"y":[636],"type":"bar","name":"Organic Lemon","marker":{"color":"rgba(38,130,142,1)","line":{"color":"rgba(38,130,142,1)"}},"textfont":{"color":"rgba(38,130,142,1)"},"error_y":{"color":"rgba(38,130,142,1)"},"error_x":{"color":"rgba(38,130,142,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Large Extra Fancy Fuji Apple"],"y":[659],"type":"bar","name":"Organic Large Extra Fancy Fuji Apple","marker":{"color":"rgba(33,144,141,1)","line":{"color":"rgba(33,144,141,1)"}},"textfont":{"color":"rgba(33,144,141,1)"},"error_y":{"color":"rgba(33,144,141,1)"},"error_x":{"color":"rgba(33,144,141,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Limes"],"y":[920],"type":"bar","name":"Limes","marker":{"color":"rgba(31,159,136,1)","line":{"color":"rgba(31,159,136,1)"}},"textfont":{"color":"rgba(31,159,136,1)"},"error_y":{"color":"rgba(31,159,136,1)"},"error_x":{"color":"rgba(31,159,136,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Strawberries"],"y":[981],"type":"bar","name":"Strawberries","marker":{"color":"rgba(39,173,129,1)","line":{"color":"rgba(39,173,129,1)"}},"textfont":{"color":"rgba(39,173,129,1)"},"error_y":{"color":"rgba(39,173,129,1)"},"error_x":{"color":"rgba(39,173,129,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Large Lemon"],"y":[1168],"type":"bar","name":"Large Lemon","marker":{"color":"rgba(62,188,116,1)","line":{"color":"rgba(62,188,116,1)"}},"textfont":{"color":"rgba(62,188,116,1)"},"error_y":{"color":"rgba(62,188,116,1)"},"error_x":{"color":"rgba(62,188,116,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Avocado"],"y":[1271],"type":"bar","name":"Organic Avocado","marker":{"color":"rgba(93,200,99,1)","line":{"color":"rgba(93,200,99,1)"}},"textfont":{"color":"rgba(93,200,99,1)"},"error_y":{"color":"rgba(93,200,99,1)"},"error_x":{"color":"rgba(93,200,99,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Hass Avocado"],"y":[1474],"type":"bar","name":"Organic Hass Avocado","marker":{"color":"rgba(130,211,77,1)","line":{"color":"rgba(130,211,77,1)"}},"textfont":{"color":"rgba(130,211,77,1)"},"error_y":{"color":"rgba(130,211,77,1)"},"error_x":{"color":"rgba(130,211,77,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Organic Strawberries"],"y":[2383],"type":"bar","name":"Organic Strawberries","marker":{"color":"rgba(170,220,50,1)","line":{"color":"rgba(170,220,50,1)"}},"textfont":{"color":"rgba(170,220,50,1)"},"error_y":{"color":"rgba(170,220,50,1)"},"error_x":{"color":"rgba(170,220,50,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Bag of Organic Bananas"],"y":[3331],"type":"bar","name":"Bag of Organic Bananas","marker":{"color":"rgba(213,226,26,1)","line":{"color":"rgba(213,226,26,1)"}},"textfont":{"color":"rgba(213,226,26,1)"},"error_y":{"color":"rgba(213,226,26,1)"},"error_x":{"color":"rgba(213,226,26,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":["Banana"],"y":[3388],"type":"bar","name":"Banana","marker":{"color":"rgba(253,231,37,1)","line":{"color":"rgba(253,231,37,1)"}},"textfont":{"color":"rgba(253,231,37,1)"},"error_y":{"color":"rgba(253,231,37,1)"},"error_x":{"color":"rgba(253,231,37,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

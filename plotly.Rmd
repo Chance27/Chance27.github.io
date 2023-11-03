@@ -1,0 +1,71 @@
+---
+title: "SC5126 Plotly"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    theme: cerulean
+---
+
+## Plotly
+Create a flexdashboard using plotly for that includes at least three distinct plot types (e.g. scatterplots, line plots, bar plots, box plots, etc.). Use one of the following datasets, and load from the p8105.datasets package:
+Instacart
+NY NOAA
+NYC Restaurant Inspections
+
+```{r import pkg, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+```
+
+```{r load_data}
+df = 
+  instacart |> 
+  select(
+    order_number, reordered, order_dow, order_hour_of_day, days_since_prior_order, 
+    product_name, aisle, department) |>
+  filter(
+    reordered == 1,
+    department == "produce",
+    days_since_prior_order < 7,
+    aisle == "fresh fruits") %>% 
+  drop_na()
+```
+
+
+## Scatter plot
+```{r scatter}
+df |>
+  count(order_dow) |> 
+  mutate(text_label = str_c(n, " orders on day ", order_dow)) |> 
+  plot_ly(
+    x = ~order_dow, y = ~n, type = "scatter", mode = "lines",
+    text = ~text_label, alpha = 0.5) |>  
+  layout(title = 'Count of order on each day', xaxis = list(title = 'Order Day of the Week'))
+
+```
+
+
+## Box plot
+```{r box}
+df |> 
+  mutate(product_name = fct_reorder(product_name, days_since_prior_order)) |> 
+  filter(product_name %in% c("Pineapple", "Strawberries", "Limes", "Cantaloupe", "Mango")) |> 
+  plot_ly(y = ~days_since_prior_order, color = ~product_name, type = "box", colors = "viridis") |> 
+  layout(yaxis = list(title = 'Days since prior order'), xaxis = list(title = 'Selected fresh fruits'))
+
+```
+
+## Bar plot
+```{r bar}
+df |> 
+  count(product_name) |> 
+  filter(n >= 400)|> 
+  mutate(product_name = fct_reorder(product_name, n)) |> 
+  plot_ly(x = ~product_name, y = ~n, color = ~product_name, type = "bar", colors = "viridis") |> 
+  layout(title = 'Count of popular product', xaxis = list(title = 'Product Name'))
+```
+
+
+
